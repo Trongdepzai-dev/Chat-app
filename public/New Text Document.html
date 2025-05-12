@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Chat App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            },
+            secondary: {
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+            },
+            danger: {
+              500: '#ef4444',
+              600: '#dc2626',
+              700: '#b91c1c',
+            },
+            glass: {
+              light: 'rgba(255, 255, 255, 0.25)',
+              dark: 'rgba(0, 0, 0, 0.1)'
+            }
+          },
+          boxShadow: {
+            'neumorphism': '8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff',
+            'inner-neumorphism': 'inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff',
+            'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
+            'float': '0 15px 30px rgba(0, 0, 0, 0.15)',
+            'glow-primary': '0 0 15px rgba(99, 102, 241, 0.5)',
+            'glow-secondary': '0 0 15px rgba(16, 185, 129, 0.5)'
+          },
+          backdropBlur: {
+            'sm': '4px',
+            'md': '8px',
+            'lg': '12px',
+            'xl': '20px'
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'bounce-slow': 'bounce 2s infinite',
+            'text-gradient': 'text-gradient 4s ease infinite',
+            'wave': 'wave 2s linear infinite',
+            'flicker': 'flicker 8s infinite alternate'
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' }
+            },
+            'text-gradient': {
+              '0%, 100%': { 'background-position': '0% 50%' },
+              '50%': { 'background-position': '100% 50%' }
+            },
+            wave: {
+              '0%': { transform: 'rotate(0deg)' },
+              '10%': { transform: 'rotate(14deg)' },
+              '20%': { transform: 'rotate(-8deg)' },
+              '30%': { transform: 'rotate(14deg)' },
+              '40%': { transform: 'rotate(-4deg)' },
+              '50%': { transform: 'rotate(10deg)' },
+              '60%': { transform: 'rotate(0deg)' },
+              '100%': { transform: 'rotate(0deg)' }
+            },
+            flicker: {
+              '0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100%': { opacity: '1' },
+              '20%, 21.999%, 63%, 63.999%, 65%, 69.999%': { opacity: '0.6' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+    }
+    
+    .chat-message {
+      max-width: 70%;
+      word-wrap: break-word;
+      transition: all 0.3s ease;
+      transform-origin: bottom;
+      backdrop-filter: blur(8px);
+    }
+    
+    .chat-message.user {
+      margin-left: auto;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.9) 0%, rgba(99, 102, 241, 0.9) 100%);
+      color: white;
+      border-radius: 18px 18px 0 18px;
+      box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
+    }
+    
+    .chat-message.other {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 18px 18px 18px 0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .smooth-transition {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5);
+    }
+    
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .message-enter {
+      animation: messageIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    
+    @keyframes messageIn {
+      0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
+    .gradient-text {
+      background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+      background-size: 200% auto;
+      color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
+      animation: text-gradient 4s ease infinite;
+    }
+    
+    .contact-item {
+      transition: all 0.3s ease;
+      transform-origin: left;
+    }
+    
+    .contact-item:hover {
+      transform: translateX(8px);
+      background: rgba(255, 255, 255, 0.4) !important;
+    }
+    
+    .contact-item.active {
+      background: rgba(99, 102, 241, 0.2) !important;
+      border-left: 3px solid #6366f1;
+    }
+    
+    .btn-hover-grow {
+      transition: all 0.3s ease;
+    }
+    
+    .btn-hover-grow:hover {
+      transform: translateY(-2px) scale(1.02);
+    }
+    
+    .btn-hover-grow:active {
+      transform: translateY(0) scale(0.98);
+    }
+    
+    .wave-animation {
+      animation: wave 2s linear infinite;
+      transform-origin: 70% 70%;
+      display: inline-block;
+    }
+    
+    .flicker-animation {
+      animation: flicker 8s infinite alternate;
+    }
+    
+    .input-glow:focus {
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5), 0 0 15px rgba(99, 102, 241, 0.3);
+    }
+    
+    @media (max-width: 640px) {
+      .auth-container {
+        width: 90%;
+        margin: 0 auto;
+      }
+      
+      .chat-message {
+        max-width: 85%;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <!-- Auth Section -->
+  <div id="authSection" class="flex items-center justify-center min-h-screen p-4">
+    <div class="glass-effect rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-white/20 smooth-transition animate__animated animate__fadeIn flicker-animation">
+      <div class="p-8">
+        <div class="text-center mb-8">
+          <h1 class="text-3xl font-bold gradient-text mb-2 animate__animated animate__fadeInDown">Welcome to Chat App</h1>
+          <p class="text-gray-600 animate__animated animate__fadeIn animate__delay-1s">Login or register to start chatting <span class="wave-animation">👋</span></p>
+        </div>
+        
+        <!-- Tabs -->
+        <div class="flex justify-center mb-6">
+          <button id="loginTab" class="px-4 py-2 font-medium text-primary-600 border-b-2 border-primary-600 relative group">
+            Login
+            <span class="absolute bottom-0 left-0 w-full h-0.5 bg-primary-600 transform origin-left scale-x-100 transition-transform duration-300 group-hover:scale-x-0"></span>
+          </button>
+          <button id="registerTab" class="px-4 py-2 font-medium text-gray-500 relative group">
+            Register
+            <span class="absolute bottom-0 left-0 w-full h-0.5 bg-primary-600 transform origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+          </button>
+        </div>
+        
+        <!-- Login Form -->
+        <form id="loginForm" class="space-y-6">
+          <div class="relative">
+            <input type="text" id="loginUsername" placeholder="Username" required 
+                   class="w-full p-3 border border-gray-200 rounded-lg focus:border-primary-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-primary-500/20 input-glow">
+          </div>
+          <div class="relative">
+            <input type="password" id="loginPassword" placeholder="Password" required 
+                   class="w-full p-3 border border-gray-200 rounded-lg focus:border-primary-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-primary-500/20 input-glow">
+          </div>
+          <button type="submit" 
+                  class="w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-medium py-3 px-4 rounded-lg smooth-transition btn-hover-grow shadow-md hover:shadow-lg flex items-center justify-center gap-2 hover:shadow-glow-primary">
+            <i class="fas fa-sign-in-alt"></i>
+            Sign In
+          </button>
+        </form>
+        
+        <!-- Register Form -->
+        <form id="registerForm" class="space-y-6 hidden">
+          <div class="relative">
+            <input type="text" id="registerUsername" placeholder="Username" required 
+                   class="w-full p-3 border border-gray-200 rounded-lg focus:border-secondary-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-secondary-500/20 input-glow">
+          </div>
+          <div class="relative">
+            <input type="password" id="registerPassword" placeholder="Password" required 
+                   class="w-full p-3 border border-gray-200 rounded-lg focus:border-secondary-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-secondary-500/20 input-glow">
+          </div>
+          <div class="relative">
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required 
+                   class="w-full p-3 border border-gray-200 rounded-lg focus:border-secondary-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-secondary-500/20 input-glow">
+          </div>
+          <button type="submit" 
+                  class="w-full bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white font-medium py-3 px-4 rounded-lg smooth-transition btn-hover-grow shadow-md hover:shadow-lg flex items-center justify-center gap-2 hover:shadow-glow-secondary">
+            <i class="fas fa-user-plus"></i>
+            Sign Up
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Section -->
+  <div id="chatSection" class="hidden min-h-screen flex flex-col">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-primary-600 to-primary-700 text-white p-4 flex justify-between items-center shadow-lg glass-effect">
+      <h1 id="welcomeMessage" class="text-xl font-semibold animate__animated animate__fadeInLeft gradient-text"></h1>
+      <form id="logoutButton">
+        <button type="submit" 
+                class="bg-danger-600 hover:bg-danger-700 text-white py-2 px-4 rounded-lg smooth-transition flex items-center gap-2 shadow-md hover:shadow-lg btn-hover-grow">
+          <i class="fas fa-sign-out-alt"></i>
+          Logout
+        </button>
+      </form>
+    </div>
+    
+    <!-- Sidebar and Chat -->
+    <div class="flex flex-1 overflow-hidden">
+      <!-- Sidebar -->
+      <div class="w-1/3 bg-gray-50/80 p-4 flex flex-col glass-effect border-r border-white/20">
+        <div class="mb-4">
+          <input id="searchInput" class="w-full p-3 border border-gray-200 rounded-lg focus:border-primary-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-primary-500/20 input-glow" placeholder="Search users..." />
+          <div id="searchResults" class="mt-2"></div>
+        </div>
+        <div id="contactList" class="flex-1 overflow-y-auto space-y-2"></div>
+        <div id="adminControls" class="hidden mt-4 space-y-2">
+          <button onclick="exportUsers()" 
+                  class="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg smooth-transition flex items-center gap-2 shadow-md hover:shadow-lg btn-hover-grow">
+            <i class="fas fa-file-export"></i>
+            Export User List
+          </button>
+          <button onclick="openBanModal()" 
+                  class="w-full bg-danger-600 hover:bg-danger-700 text-white font-medium py-2 px-4 rounded-lg smooth-transition flex items-center gap-2 shadow-md hover:shadow-lg btn-hover-grow">
+            <i class="fas fa-ban"></i>
+            Ban User
+          </button>
+        </div>
+      </div>
+      
+      <!-- Chat Area -->
+      <div class="flex-1 flex flex-col">
+        <div class="p-4 border-b border-white/20 bg-white/80 glass-effect">
+          <h2 id="chatTitle" class="font-semibold text-gray-800 gradient-text">Public</h2>
+        </div>
+        <div id="chatBox" class="flex-1 p-4 overflow-y-auto bg-white/80 backdrop-blur-xl rounded-xl shadow-inner inner-neumorphism glass-effect"></div>
+        <form id="messageForm" class="p-4 bg-gray-50/80 border-t border-white/20 flex gap-2 glass-effect">
+          <input type="text" id="messageInput" placeholder="Type your message..." 
+                 class="flex-1 p-3 border border-gray-200 rounded-lg focus:border-primary-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-primary-500/20 input-glow">
+          <button type="submit" 
+                  class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-6 rounded-lg smooth-transition btn-hover-grow shadow-md hover:shadow-lg flex items-center justify-center">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ban User Modal -->
+  <div id="banModal" class="hidden fixed inset-0 bg-gray-600/50 backdrop-blur-sm flex items-center justify-center z-50">
+    <div class="bg-white/90 p-6 rounded-lg shadow-xl glass-effect animate__animated animate__zoomIn">
+      <h3 class="text-lg font-bold mb-4 gradient-text">Ban User</h3>
+      <form id="banForm" class="space-y-4">
+        <input type="number" id="banUserId" placeholder="User ID" required 
+               class="w-full p-3 border border-gray-200 rounded-lg focus:border-danger-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-danger-500/20 input-glow">
+        <input type="number" id="banDuration" placeholder="Ban duration (days, 0 for permanent)" required 
+               class="w-full p-3 border border-gray-200 rounded-lg focus:border-danger-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-danger-500/20 input-glow">
+        <div class="flex space-x-2">
+          <button type="submit" 
+                  class="bg-danger-600 hover:bg-danger-700 text-white font-medium py-2 px-4 rounded-lg smooth-transition btn-hover-grow shadow-md hover:shadow-lg">
+            Ban
+          </button>
+          <button type="button" onclick="closeModal()" 
+                  class="bg-gray-300 hover:bg-gray-400 text-black font-medium py-2 px-4 rounded-lg smooth-transition btn-hover-grow">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Enhanced message animation
+    function addMessageWithAnimation(message, className) {
+      const chatBox = document.getElementById('chatBox');
+      const messageElement = document.createElement('div');
+      messageElement.className = `chat-message ${className} p-3 mb-2 message-enter`;
+      messageElement.innerHTML = message;
+      chatBox.appendChild(messageElement);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+</body>
+</html>

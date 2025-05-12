@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat App by B.Trọng</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: { 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca' },
+            secondary: { 500: '#10b981', 600: '#059669', 700: '#047857' },
+            danger: { 500: '#ef4444', 600: '#dc2626', 700: '#b91c1c' },
+            glass: { light: 'rgba(255, 255, 255, 0.25)', dark: 'rgba(0, 0, 0, 0.1)' },
+            friend: { 500: '#10b981', 600: '#059669' } // Màu cho tag Friend
+          },
+          boxShadow: {
+            'neumorphism': '8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff',
+            'inner-neumorphism': 'inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff',
+            'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
+            'float': '0 15px 30px rgba(0, 0, 0, 0.15)',
+            'glow-primary': '0 0 15px rgba(99, 102, 241, 0.5)',
+            'glow-secondary': '0 0 15px rgba(16, 185, 129, 0.5)',
+            'glow-danger': '0 0 15px rgba(239, 68, 68, 0.5)',
+            'glow-friend': '0 0 15px rgba(16, 185, 129, 0.5)', // Glow cho tag Friend
+            'subtle-glow': '0 0 10px rgba(255, 255, 255, 0.3)',
+            'deep-glow': '0 0 25px rgba(99, 102, 241, 0.7)'
+          },
+          backdropBlur: { 'sm': '4px', 'md': '8px', 'lg': '12px', 'xl': '20px', '2xl': '30px' },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'bounce-slow': 'bounce 2s infinite',
+            'text-gradient': 'text-gradient 4s ease infinite',
+            'wave': 'wave 2s linear infinite',
+            'flicker': 'flicker 8s infinite alternate',
+            'breath': 'breath 5s ease infinite',
+            'slide-in-left': 'slideInLeft 0.5s ease-out',
+            'slide-in-right': 'slideInRight 0.5s ease-out',
+            'slide-in-up': 'slideInUp 0.5s ease-out',
+            'slide-in-down': 'slideInDown 0.5s ease-out',
+            'rotate-3d': 'rotate3d 8s linear infinite',
+            'jelly': 'jelly 0.8s ease both',
+            'shake': 'shake 0.8s ease both',
+            'blink': 'blink 1.5s ease infinite',
+            'swing': 'swing 2s ease infinite',
+            'tilt': 'tilt 10s ease infinite',
+            'wobble': 'wobble 3s ease infinite',
+            'bounce-in': 'bounceIn 1s ease both',
+            'bounce-in-up': 'bounceInUp 1s ease both',
+            'bounce-in-down': 'bounceInDown 1s ease both',
+            'bounce-in-left': 'bounceInLeft 1s ease both',
+            'bounce-in-right': 'bounceInRight 1s ease both',
+            'fade-in': 'fadeIn 0.8s ease both',
+            'fade-in-up': 'fadeInUp 0.8s ease both',
+            'fade-in-down': 'fadeInDown 0.8s ease both',
+            'fade-in-left': 'fadeInLeft 0.8s ease both',
+            'fade-in-right': 'fadeInRight 0.8s ease both',
+            'flip-in-x': 'flipInX 1s ease both',
+            'flip-in-y': 'flipInY 1s ease both',
+            'zoom-in': 'zoomIn 0.8s ease both',
+            'zoom-in-up': 'zoomInUp 0.8s ease both',
+            'zoom-in-down': 'zoomInDown 0.8s ease both',
+            'zoom-in-left': 'zoomInLeft 0.8s ease both',
+            'zoom-in-right': 'zoomInRight 0.8s ease both',
+            'light-speed-in': 'lightSpeedIn 1s ease both',
+            'roll-in': 'rollIn 1s ease both',
+            'flash': 'flash 2s ease infinite',
+            'rubber-band': 'rubberBand 1s ease both',
+            'heart-beat': 'heartBeat 1.5s ease infinite',
+            'hinge': 'hinge 2s ease both',
+            'jack-in-the-box': 'jackInTheBox 1s ease both',
+            'floating': 'floating 6s ease infinite',
+            'dance': 'dance 4s ease infinite',
+            'pulse-grow': 'pulseGrow 1.5s ease infinite',
+            'pulse-shrink': 'pulseShrink 1.5s ease infinite',
+            'push': 'push 0.8s ease both',
+            'pop': 'pop 0.8s ease both',
+            'bounce-alt': 'bounceAlt 1s ease infinite',
+            'spin': 'spin 2s linear infinite',
+            'spin-reverse': 'spinReverse 2s linear infinite',
+            'ping-slow': 'pingSlow 3s cubic-bezier(0,0,0.2,1) infinite',
+            'ripple': 'ripple 2s ease infinite',
+            'rainbow': 'rainbow 8s linear infinite',
+            'neon-flicker': 'neonFlicker 5s ease infinite alternate',
+            'particle-explode': 'particleExplode 1s ease both',
+            'glitch': 'glitch 2s ease infinite',
+            'morph': 'morph 10s ease infinite',
+            'squash': 'squash 1s ease both',
+            'stretch': 'stretch 1s ease both',
+            'orbit': 'orbit 10s linear infinite',
+            'twinkle': 'twinkle 3s ease infinite',
+            'sparkle': 'sparkle 2s ease infinite'
+          },
+          keyframes: {
+            float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+            'text-gradient': { '0%, 100%': { 'background-position': '0% 50%' }, '50%': { 'background-position': '100% 50%' } },
+            wave: { '0%': { transform: 'rotate(0deg)' }, '10%': { transform: 'rotate(14deg)' }, '20%': { transform: 'rotate(-8deg)' }, '30%': { transform: 'rotate(14deg)' }, '40%': { transform: 'rotate(-4deg)' }, '50%': { transform: 'rotate(10deg)' }, '60%': { transform: 'rotate(0deg)' }, '100%': { transform: 'rotate(0deg)' } },
+            flicker: { '0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100%': { opacity: '1' }, '20%, 21.999%, 63%, 63.999%, 65%, 69.999%': { opacity: '0.6' } },
+            breath: { '0%, 100%': { transform: 'scale(1)', opacity: '1' }, '50%': { transform: 'scale(1.05)', opacity: '0.8' } },
+            slideInLeft: { '0%': { transform: 'translateX(-100%)', opacity: '0' }, '100%': { transform: 'translateX(0)', opacity: '1' } },
+            slideInRight: { '0%': { transform: 'translateX(100%)', opacity: '0' }, '100%': { transform: 'translateX(0)', opacity: '1' } },
+            slideInUp: { '0%': { transform: 'translateY(100%)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+            slideInDown: { '0%': { transform: 'translateY(-100%)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+            rotate3d: { '0%': { transform: 'rotate3d(1, 1, 1, 0deg)' }, '100%': { transform: 'rotate3d(1, 1, 1, 360deg)' } },
+            jelly: { '0%, 100%': { transform: 'scale(1, 1)' }, '25%': { transform: 'scale(0.9, 1.1)' }, '50%': { transform: 'scale(1.1, 0.9)' }, '75%': { transform: 'scale(0.95, 1.05)' } },
+            shake: { '0%, 100%': { transform: 'translateX(0)' }, '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-5px)' }, '20%, 40%, 60%, 80%': { transform: 'translateX(5px)' } },
+            blink: { '0%, 50%, 100%': { opacity: '1' }, '25%, 75%': { opacity: '0.4' } },
+            swing: { '20%': { transform: 'rotate(15deg)' }, '40%': { transform: 'rotate(-10deg)' }, '60%': { transform: 'rotate(5deg)' }, '80%': { transform: 'rotate(-5deg)' }, '100%': { transform: 'rotate(0deg)' } },
+            tilt: { '0%, 50%, 100%': { transform: 'rotate(0deg)' }, '25%': { transform: 'rotate(5deg)' }, '75%': { transform: 'rotate(-5deg)' } },
+            wobble: { '0%, 100%': { transform: 'translateX(0%)' }, '15%': { transform: 'translateX(-25%) rotate(-5deg)' }, '30%': { transform: 'translateX(20%) rotate(3deg)' }, '45%': { transform: 'translateX(-15%) rotate(-3deg)' }, '60%': { transform: 'translateX(10%) rotate(2deg)' }, '75%': { transform: 'translateX(-5%) rotate(-1deg)' } },
+            bounceIn: { '0%': { transform: 'scale(0.3)', opacity: '0' }, '50%': { transform: 'scale(1.05)', opacity: '1' }, '70%': { transform: 'scale(0.9)' }, '100%': { transform: 'scale(1)' } },
+            bounceInUp: { '0%': { transform: 'translateY(500px)', opacity: '0' }, '60%': { transform: 'translateY(-20px)', opacity: '1' }, '80%': { transform: 'translateY(10px)' }, '100%': { transform: 'translateY(0)' } },
+            bounceInDown: { '0%': { transform: 'translateY(-500px)', opacity: '0' }, '60%': { transform: 'translateY(20px)', opacity: '1' }, '80%': { transform: 'translateY(-10px)' }, '100%': { transform: 'translateY(0)' } },
+            bounceInLeft: { '0%': { transform: 'translateX(-500px)', opacity: '0' }, '60%': { transform: 'translateX(20px)', opacity: '1' }, '80%': { transform: 'translateX(-10px)' }, '100%': { transform: 'translateX(0)' } },
+            bounceInRight: { '0%': { transform: 'translateX(500px)', opacity: '0' }, '60%': { transform: 'translateX(-20px)', opacity: '1' }, '80%': { transform: 'translateX(10px)' }, '100%': { transform: 'translateX(0)' } },
+            fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+            fadeInUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+            fadeInDown: { '0%': { transform: 'translateY(-20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+            fadeInLeft: { '0%': { transform: 'translateX(-20px)', opacity: '0' }, '100%': { transform: 'translateX(0)', opacity: '1' } },
+            fadeInRight: { '0%': { transform: 'translateX(20px)', opacity: '0' }, '100%': { transform: 'translateX(0)', opacity: '1' } },
+            flipInX: { '0%': { transform: 'perspective(400px) rotateX(90deg)', opacity: '0' }, '40%': { transform: 'perspective(400px) rotateX(-20deg)' }, '60%': { transform: 'perspective(400px) rotateX(10deg)', opacity: '1' }, '80%': { transform: 'perspective(400px) rotateX(-5deg)' }, '100%': { transform: 'perspective(400px) rotateX(0deg)' } },
+            flipInY: { '0%': { transform: 'perspective(400px) rotateY(90deg)', opacity: '0' }, '40%': { transform: 'perspective(400px) rotateY(-20deg)' }, '60%': { transform: 'perspective(400px) rotateY(10deg)', opacity: '1' }, '80%': { transform: 'perspective(400px) rotateY(-5deg)' }, '100%': { transform: 'perspective(400px) rotateY(0deg)' } },
+            zoomIn: { '0%': { transform: 'scale(0.3)', opacity: '0' }, '50%': { opacity: '1' }, '100%': { transform: 'scale(1)' } },
+            zoomInUp: { '0%': { transform: 'scale(0.1) translateY(500px)', opacity: '0' }, '60%': { transform: 'scale(0.5) translateY(-20px)', opacity: '1' }, '100%': { transform: 'scale(1) translateY(0)' } },
+            zoomInDown: { '0%': { transform: 'scale(0.1) translateY(-500px)', opacity: '0' }, '60%': { transform: 'scale(0.5) translateY(20px)', opacity: '1' }, '100%': { transform: 'scale(1) translateY(0)' } },
+            zoomInLeft: { '0%': { transform: 'scale(0.1) translateX(-500px)', opacity: '0' }, '60%': { transform: 'scale(0.5) translateX(20px)', opacity: '1' }, '100%': { transform: 'scale(1) translateX(0)' } },
+            zoomInRight: { '0%': { transform: 'scale(0.1) translateX(500px)', opacity: '0' }, '60%': { transform: 'scale(0.5) translateX(-20px)', opacity: '1' }, '100%': { transform: 'scale(1) translateX(0)' } },
+            lightSpeedIn: { '0%': { transform: 'translateX(100%) skewX(-30deg)', opacity: '0' }, '60%': { transform: 'skewX(20deg)', opacity: '1' }, '80%': { transform: 'skewX(-5deg)' }, '100%': { transform: 'translateX(0) skewX(0deg)' } },
+            rollIn: { '0%': { transform: 'translateX(-100%) rotate(-120deg)', opacity: '0' }, '100%': { transform: 'translateX(0) rotate(0deg)', opacity: '1' } },
+            flash: { '0%, 50%, 100%': { opacity: '1' }, '25%, 75%': { opacity: '0.3' } },
+            rubberBand: { '0%': { transform: 'scale(1)' }, '30%': { transform: 'scale(1.25, 0.75)' }, '40%': { transform: 'scale(0.75, 1.25)' }, '50%': { transform: 'scale(1.15, 0.85)' }, '65%': { transform: 'scale(0.95, 1.05)' }, '75%': { transform: 'scale(1.05, 0.95)' }, '100%': { transform: 'scale(1)' } },
+            heartBeat: { '0%': { transform: 'scale(1)' }, '14%': { transform: 'scale(1.3)' }, '28%': { transform: 'scale(1)' }, '42%': { transform: 'scale(1.3)' }, '70%': { transform: 'scale(1)' } },
+            hinge: { '0%': { transform: 'rotate(0)', 'transform-origin': 'top left', opacity: '1' }, '20%, 60%': { transform: 'rotate(80deg)', 'transform-origin': 'top left' }, '40%': { transform: 'rotate(60deg)', 'transform-origin': 'top left' }, '80%': { transform: 'rotate(60deg) translateY(0)', 'transform-origin': 'top left', opacity: '1' }, '100%': { transform: 'translateY(700px)', opacity: '0' } },
+            jackInTheBox: { '0%': { opacity: '0', transform: 'scale(0.1) rotate(30deg)', 'transform-origin': 'center bottom' }, '50%': { transform: 'rotate(-10deg)' }, '70%': { transform: 'rotate(3deg)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
+            floating: { '0%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-15px)' }, '100%': { transform: 'translateY(0px)' } },
+            dance: { '0%, 100%': { transform: 'translateY(0) rotate(0deg)' }, '20%': { transform: 'translateY(-20px) rotate(10deg)' }, '40%': { transform: 'translateY(10px) rotate(-10deg)' }, '60%': { transform: 'translateY(-10px) rotate(5deg)' }, '80%': { transform: 'translateY(5px) rotate(-5deg)' } },
+            pulseGrow: { '0%': { transform: 'scale(1)' }, '50%': { transform: 'scale(1.1)' }, '100%': { transform: 'scale(1)' } },
+            pulseShrink: { '0%': { transform: 'scale(1)' }, '50%': { transform: 'scale(0.9)' }, '100%': { transform: 'scale(1)' } },
+            push: { '0%': { transform: 'scale(1)' }, '50%': { transform: 'scale(0.8)' }, '100%': { transform: 'scale(1)' } },
+            pop: { '0%': { transform: 'scale(1)' }, '50%': { transform: 'scale(1.2)' }, '100%': { transform: 'scale(1)' } },
+            bounceAlt: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-20px)' } },
+            spin: { '0%': { transform: 'rotate(0deg)' }, '100%': { transform: 'rotate(360deg)' } },
+            spinReverse: { '0%': { transform: 'rotate(0deg)' }, '100%': { transform: 'rotate(-360deg)' } },
+            pingSlow: { '75%, 100%': { transform: 'scale(2)', opacity: '0' } },
+            ripple: { '0%': { transform: 'scale(0.8)', opacity: '1' }, '100%': { transform: 'scale(2.4)', opacity: '0' } },
+            rainbow: { '0%': { 'background-position': '0% 50%' }, '50%': { 'background-position': '100% 50%' }, '100%': { 'background-position': '0% 50%' } },
+            neonFlicker: {
+              '0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100%': { 
+                opacity: '1', 'text-shadow': '0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #6366f1, 0 0 70px #6366f1, 0 0 80px #6366f1, 0 0 100px #6366f1, 0 0 150px #6366f1'
+              },
+              '20%, 21.999%, 63%, 63.999%, 65%, 69.999%': { 
+                opacity: '0.6', 'text-shadow': '0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #6366f1, 0 0 35px #6366f1, 0 0 40px #6366f1, 0 0 50px #6366f1, 0 0 75px #6366f1'
+              }
+            },
+            particleExplode: { '0%': { transform: 'scale(0)', opacity: '1' }, '100%': { transform: 'scale(1.5)', opacity: '0' } },
+            glitch: { '0%': { transform: 'translate(0)' }, '20%': { transform: 'translate(-5px, 5px)' }, '40%': { transform: 'translate(-5px, -5px)' }, '60%': { transform: 'translate(5px, 5px)' }, '80%': { transform: 'translate(5px, -5px)' }, '100%': { transform: 'translate(0)' } },
+            morph: { '0%': { 'border-radius': '60% 40% 30% 70%/60% 30% 70% 40%' }, '50%': { 'border-radius': '30% 60% 70% 40%/50% 60% 30% 60%' }, '100%': { 'border-radius': '60% 40% 30% 70%/60% 30% 70% 40%' } },
+            squash: { '0%': { transform: 'scaleX(1) scaleY(1)' }, '50%': { transform: 'scaleX(1.5) scaleY(0.5)' }, '100%': { transform: 'scaleX(1) scaleY(1)' } },
+            stretch: { '0%': { transform: 'scaleX(1) scaleY(1)' }, '50%': { transform: 'scaleX(0.5) scaleY(1.5)' }, '100%': { transform: 'scaleX(1) scaleY(1)' } },
+            orbit: { '0%': { transform: 'rotate(0deg) translateX(50px) rotate(0deg)' }, '100%': { transform: 'rotate(360deg) translateX(50px) rotate(-360deg)' } },
+            twinkle: { '0%, 100%': { opacity: '1' }, '50%': { opacity: '0.3' } },
+            sparkle: { '0%': { opacity: '1', transform: 'scale(1)' }, '50%': { opacity: '0.7', transform: 'scale(1.2)' }, '100%': { opacity: '1', transform: 'scale(1)' } }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; overflow-x: hidden; }
+    .chat-message { max-width: 70%; word-wrap: break-word; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: bottom; backdrop-filter: blur(12px); animation-duration: 0.6s; animation-fill-mode: both; }
+    .chat-message.user { margin-left: auto; background: linear-gradient(135deg, rgba(79, 70, 229, 0.9) 0%, rgba(99, 102, 241, 0.9) 100%); color: white; border-radius: 18px 18px 0 18px; box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3); animation-name: bounceInRight; }
+    .chat-message.other { background: rgba(255, 255, 255, 0.85); border-radius: 18px 18px 18px 0; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border: 1px solid rgba(255, 255, 255, 0.3); animation-name: bounceInLeft; }
+    .smooth-transition { transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    input:focus { outline: none; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5), 0 0 20px rgba(99, 102, 241, 0.2); transform: translateY(-2px); }
+    .glass-effect { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.25); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; }
+    .glass-effect:hover { backdrop-filter: blur(25px) saturate(200%); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15); }
+    .message-enter { animation: messageIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    @keyframes messageIn { 0% { opacity: 0; transform: translateY(20px) scale(0.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+    .gradient-text { background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899, #f43f5e, #f59e0b); background-size: 300% auto; color: transparent; background-clip: text; -webkit-background-clip: text; animation: text-gradient 6s ease infinite, neonFlicker 5s ease infinite alternate; }
+    .contact-item { transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); transform-origin: left; animation: fadeIn 0.6s ease both; animation-delay: calc(var(--order) * 0.1s); }
+    .contact-item:hover { transform: translateX(10px) scale(1.02); background: rgba(255, 255, 255, 0.5) !important; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
+    .contact-item.active { background: rgba(99, 102, 241, 0.25) !important; border-left: 4px solid #6366f1; animation: pulse-slow 2s infinite; }
+    .btn-hover-grow { transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); transform-origin: center; }
+    .btn-hover-grow:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
+    .btn-hover-grow:active { transform: translateY(1px) scale(0.98); }
+    .wave-animation { animation: wave 2s linear infinite; transform-origin: 70% 70%; display: inline-block; }
+    .flicker-animation { animation: flicker 8s infinite alternate, float 6s ease-in-out infinite; }
+    .input-glow:focus { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5), 0 0 20px rgba(99, 102, 241, 0.4); transform: translateY(-2px); }
+    .auth-container { animation: pop 0.6s ease both, float 8s ease-in-out infinite; }
+    .tab-active { animation: pulse-grow 1.5s infinite; }
+    .admin-control { animation: fadeInUp 0.6s ease both; animation-delay: calc(var(--order) * 0.1s); }
+    #messageForm { animation: slideInUp 0.6s ease both; }
+    #chatTitle { animation: rubberBand 1s ease both; animation-delay: 0.5s; }
+    #welcomeMessage { animation: light-speed-in 0.8s ease both; }
+    #logoutButton { animation: jack-in-the-box 1s ease both; animation-delay: 0.3s; }
+    #searchInput { animation: zoomIn 0.6s ease both; }
+    #searchResults { animation: fadeIn 0.6s ease both; }
+    #contactList { animation: fadeInLeft 0.6s ease both; }
+    #chatBox { animation: fadeInRight 0.6s ease both; }
+    #banModal, #exportModal { animation: fadeIn 0.3s ease both; }
+    @media (max-width: 640px) {
+      .auth-container { width: 90%; margin: 0 auto; }
+      .chat-message { max-width: 85%; animation-name: bounceInUp !important; }
+      #contactList, #chatBox { animation: fadeInUp 0.6s ease both; }
+    }
+    .message-particle { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: rgba(99, 102, 241, 0.8); animation: particle-explode 1s ease-out forwards; pointer-events: none; }
+    .ripple-effect { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.6); transform: scale(0); animation: ripple 0.6s linear; pointer-events: none; }
+    .morph-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%); z-index: -1; animation: morph 15s ease infinite; }
+    .friend-tag { background: linear-gradient(to right, #10b981, #059669); color: white; font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 9999px; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div class="morph-bg"></div>
+  
+  <div id="authSection" class="flex items-center justify-center min-h-screen p-4">
+    <div class="glass-effect rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-white/20 smooth-transition animate__animated animate__fadeIn flicker-animation auth-container">
+      <div class="p-8">
+        <div class="text-center mb-8">
+          <h1 class="text-3xl font-bold gradient-text mb-2 animate__animated animate__fadeInDown">Welcome to Chat App</h1>
+          <p class="text-gray-600 animate__animated animate__fadeIn animate__delay-1s">Login or register to start chatting <span class="wave-animation">👋</span></p>
+        </div>
+        
+        <div class="flex justify-center mb-6">
+          <button id="loginTab" class="px-4 py-2 font-medium text-primary-600 border-b-2 border-primary-600 relative group tab-active">
+            Login
+            <span class="absolute bottom-0 left-0 w-full h-0.5 bg-primary-600 transform origin-left scale-x-100 transition-transform duration-300 group-hover:scale-x-0"></span>
+          </button>
+          <button id="registerTab" class="px-4 py-2 font-medium text-gray-500 relative group">
+            Register
+            <span class="absolute bottom-0 left-0 w-full h-0.5 bg-primary-600 transform origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+          </button>
+        </div>
+        
+        <form id="loginForm" class="space-y-6">
+          <div class="relative">
+            <input type="text" id="loginUsername" placeholder="Username" required class="w-full p-3 border border-gray-200 rounded-lg focus:border-primary-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-primary-500/20 input-glow">
+          </div>
+          <div class="relative">
+            <input type="password" id="loginPassword" placeholder="Password" required class="w-full p-3 border border-gray-200 rounded-lg focus:border-primary-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-primary-500/20 input-glow">
+            <button type="button" onclick="togglePassword('loginPassword')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <button type="submit" class="w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-medium py-3 px-4 rounded-lg smooth-transition btn-hover-grow shadow-md hover:shadow-lg flex items-center justify-center gap-2 hover:shadow-glow-primary relative overflow-hidden">
+            <i class="fas fa-sign-in-alt"></i> Sign In
+          </button>
+        </form>
+        
+        <form id="registerForm" class="space-y-6 hidden">
+          <div class="relative">
+            <input type="text" id="registerUsername" placeholder="Username" required class="w-full p-3 border border-gray-200 rounded-lg focus:border-secondary-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-secondary-500/20 input-glow">
+          </div>
+          <div class="relative">
+            <input type="password" id="registerPassword" placeholder="Password" required class="w-full p-3 border border-gray-200 rounded-lg focus:border-secondary-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-secondary-500/20 input-glow">
+            <button type="button" onclick="togglePassword('registerPassword')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <div class="relative">
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required class="w-full p-3 border border-gray-200 rounded-lg focus:border-secondary-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-secondary-500/20 input-glow">
+            <button type="button" onclick="togglePassword('confirmPassword')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <button type="submit" class="w-full bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white font-medium py-3 px-4 rounded-lg smooth-transition btn-hover-grow shadow-md hover:shadow-lg flex items-center justify-center gap-2 hover:shadow-glow-secondary relative overflow-hidden">
+            <i class="fas fa-user-plus"></i> Sign Up
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="chatSection" class="hidden min-h-screen flex flex-col">
+    <div class="bg-gradient-to-r from-primary-600 to-primary-700 text-white p-4 flex justify-between items-center shadow-lg glass-effect">
+      <h1 id="welcomeMessage" class="text-xl font-semibold gradient-text"></h1>
+      <form id="logoutButton">
+        <button type="submit" class="bg-danger-600 hover:bg-danger-700 text-white py-2 px-4 rounded-lg smooth-transition flex items-center gap-2 shadow-md hover:shadow-lg btn-hover-grow relative overflow-hidden">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </form>
+    </div>
+    
+    <div class="flex flex-1 overflow-hidden">
+      <div class="w-1/3 bg-gray-50/80 p-4 flex flex-col glass-effect border-r border-white/20">
+        <div class="mb-4">
+          <input id="searchInput" class="w-full p-3 border border-gray-200 rounded-lg focus:border-primary-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-primary-500/20 input-glow" placeholder="Search users..." />
+          <div id="searchResults" class="mt-2"></div>
+        </div>
+        <div id="contactList" class="flex-1 overflow-y-auto space-y-2"></div>
+        <div id="adminControls" class="hidden mt-4 space-y-2">
+          <button onclick="exportUsers()" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg smooth-transition flex items-center gap-2 shadow-md hover:shadow-lg btn-hover-grow admin-control" style="--order: 0">
+            <i class="fas fa-file-export"></i> Export User List
+          </button>
+          <button onclick="openBanModal()" class="w-full bg-danger-600 hover:bg-danger-700 text-white font-medium py-2 px-4 rounded-lg smooth-transition flex items-center gap-2 shadow-md hover:shadow-lg btn-hover-grow admin-control" style="--order: 1">
+            <i class="fas fa-ban"></i> Ban User
+          </button>
+        </div>
+      </div>
+      
+      <div class="flex-1 flex flex-col">
+        <div class="p-4 border-b border-white/20 bg-white/80 glass-effect">
+          <h2 id="chatTitle" class="font-semibold text-gray-800 gradient-text">Public</h2>
+        </div>
+        <div id="chatBox" class="flex-1 p-4 overflow-y-auto bg-white/80 backdrop-blur-xl rounded-xl shadow-inner inner-neumorphism glass-effect"></div>
+        <form id="messageForm" class="p-4 bg-gray-50/80 border-t border-white/20 flex gap-2 glass-effect">
+          <input type="text" id="messageInput" placeholder="Type your message..." class="flex-1 p-3 border border-gray-200 rounded-lg focus:border-primary-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-primary-500/20 input-glow">
+          <button type="submit" class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-6 rounded-lg smooth-transition btn-hover-grow shadow-md hover:shadow-lg flex items-center justify-center relative overflow-hidden">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="banModal" class="hidden fixed inset-0 bg-gray-600/50 backdrop-blur-sm flex items-center justify-center z-50">
+    <div class="bg-white/90 p-6 rounded-lg shadow-xl glass-effect">
+      <h3 class="text-lg font-bold mb-4 gradient-text">Ban User</h3>
+      <form id="banForm" class="space-y-4">
+        <input type="number" id="banUserId" placeholder="User ID" required class="w-full p-3 border border-gray-200 rounded-lg focus:border-danger-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-danger-500/20 input-glow">
+        <input type="number" id="banDuration" placeholder="Ban duration (days, 0 for permanent)" required class="w-full p-3 border border-gray-200 rounded-lg focus:border-danger-600 smooth-transition hover:shadow-md focus:ring-2 focus:ring-danger-500/20 input-glow">
+        <div class="flex space-x-2">
+          <button type="submit" class="bg-danger-600 hover:bg-danger-700 text-white font-medium py-2 px-4 rounded-lg smooth-transition btn-hover-grow shadow-md hover:shadow-lg">Ban</button>
+          <button type="button" onclick="closeModal()" class="bg-gray-300 hover:bg-gray-400 text-black font-medium py-2 px-4 rounded-lg smooth-transition btn-hover-grow">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="exportModal" class="hidden fixed inset-0 bg-gray-600/50 backdrop-blur-sm flex items-center justify-center z-50">
+    <div class="bg-white/90 p-6 rounded-lg shadow-xl glass-effect">
+      <h3 class="text-lg font-bold mb-4 gradient-text">Export User List</h3>
+      <p id="exportContent" class="mb-4 text-gray-700"></p>
+      <button onclick="closeExportModal()" class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg smooth-transition btn-hover-grow">Close</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+  <script>
+    function addMessageWithAnimation(message, className) {
+      const chatBox = document.getElementById('chatBox');
+      const messageElement = document.createElement('div');
+      messageElement.className = `chat-message ${className} p-3 mb-2 message-enter`;
+      messageElement.innerHTML = message;
+      chatBox.appendChild(messageElement);
+      if (className === 'user') {
+        for (let i = 0; i < 5; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'message-particle';
+          particle.style.left = `${Math.random() * 100}%`;
+          particle.style.top = `${Math.random() * 100}%`;
+          chatBox.appendChild(particle);
+          setTimeout(() => particle.remove(), 1000);
+        }
+      }
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+    document.querySelectorAll('button').forEach(button => {
+      button.addEventListener('click', function(e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple-effect';
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+        this.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "1",
+      "password": "$2b$10$7ar9piXd5hO2rpNgQstY4OAy7HjsB80vdRiRHwoB10VM0jmE45cX2",
+      "isAdmin": true
+    },
+    {
+      "id": 2,
+      "username": "2",
+      "password": "$2b$10$aGW3GNmTQJTvDhP1mIZqZOF7nBHyUaCiTitvMALhFaVAEAuvfp0/i",
+      "isAdmin": false
+    },
+    {
+      "id": 3,
+      "username": "`1",
+      "password": "$2b$10$Qfs4xn1R5UxKVHYJkzgVJePJrl/lxc.1JUUtKWdrnIsTCw0uTVrKi",
+      "isAdmin": false
+    }
+  ],
+  "messages": {
+    "public": [
+      {
+        "user": {
+          "id": 1,
+          "username": "1",
+          "isAdmin": true
+        },
+        "message": "hi"
+      },
+      {
+        "user": {
+          "id": 3,
+          "username": "`1",
+          "isAdmin": false
+        },
+        "message": "hi"
+      }
+    ],
+    "chat_vbuzk3bv2": [
+      {
+        "user": {
+          "id": 1,
+          "username": "1",
+          "isAdmin": true
+        },
+        "message": "hi"
+      }
+    ]
+  },
+  "friendRequests": [
+    {
+      "id": 1,
+      "fromId": 1,
+      "fromUsername": "1",
+      "toId": 2
+    }
+  ],
+  "bans": []
+}

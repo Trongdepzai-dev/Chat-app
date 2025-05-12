@@ -1,0 +1,16 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "A modern chat application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "join": "node join.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security",
+    "socket.io": "^4.8.1"
+  }
+}
